@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    ports:
+     - '8000:8000'
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    networks:
+      - laravel_network
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: logcomex
+      DB_USERNAME: pguser
+      DB_PASSWORD: pgpassword
+      APP_ENV: development
+    command: >
+      sh -c "
+      ./wait-for-it.sh -h postgres -p 5432 -t 60 -- &&
+      php artisan migrate --seed &&
+      php -S 0.0.0.0:8000 -t /var/www/html/public
+      "
+    depends_on:
+     - postgres
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: logcomex
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - laravel_network
+
+volumes:
+  pg-data:
+
+networks:
+  laravel_network:
+    driver: bridge
