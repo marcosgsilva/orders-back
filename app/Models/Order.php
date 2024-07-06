@@ -9,11 +9,10 @@ class Order extends Model
 {
 
     protected $fillable = [
-        'status', // adicione outros campos fillable conforme necessário
+        'status',
         'customer_name',
         'description',
         'quantity'
-        // outros campos fillable aqui
     ];
 
     use HasFactory;

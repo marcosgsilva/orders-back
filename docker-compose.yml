@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  app:
+  laravel-app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,6 +10,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - ./wait-for-it.sh:/wait-for-it.sh
     networks:
       - laravel_network
     environment:
@@ -22,7 +23,7 @@ services:
       APP_ENV: development
     command: >
       sh -c "
-      ./wait-for-it.sh -h postgres -p 5432 -t 60 -- &&
+      ./wait-for-it.sh -h postgres -p 5432 -t 90 -- &&
       php artisan migrate --seed &&
       php -S 0.0.0.0:8000 -t /var/www/html/public
       "

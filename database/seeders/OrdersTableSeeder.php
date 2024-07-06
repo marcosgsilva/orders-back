@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Order;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class OrdersTableSeeder extends Seeder
@@ -16,12 +16,15 @@ class OrdersTableSeeder extends Seeder
         $numberOfOrders = 2000;
 
         for ($i = 1; $i <= $numberOfOrders; $i++) {
+            $randomCreatedAt = Carbon::now()->subMonths(rand(1,12));
+
             if ($i > 0 && $i <= 300) {
                 Order::create([
                     'status' => 'SUCESSO', //pendente
                     'customer_name' => 'Cliente ' . $i,
                     'description' => 'Descrição do cliente ' . $i,
                     'quantity' => rand(1, 10),
+                    'created_at'=> $randomCreatedAt
                 ]);
             } else  if ($i > 300 && $i <= 400) {
                 Order::create([
@@ -29,6 +32,7 @@ class OrdersTableSeeder extends Seeder
                     'customer_name' => 'Cliente ' . $i,
                     'description' => 'Descrição do cliente ' . $i,
                     'quantity' => rand(1, 10),
+                    'created_at'=> $randomCreatedAt
                 ]);
             } else  if ($i > 400) {
                 Order::create([
@@ -36,6 +40,7 @@ class OrdersTableSeeder extends Seeder
                     'customer_name' => 'Cliente ' . $i,
                     'description' => 'Descrição do cliente  ' . $i,
                     'quantity' => rand(1, 10),
+                    'created_at'=> $randomCreatedAt
                 ]);
             }
         }
